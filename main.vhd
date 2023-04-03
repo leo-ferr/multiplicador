@@ -1,5 +1,6 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
+-- USE ieee.std_logic_signed.all
 USE work.utils.gerador_operando;
 USE work.utils.somador;
 
@@ -11,6 +12,10 @@ ENTITY main IS
 END main;
 
 ARCHITECTURE behavior OF main IS
+  --CONSTANT op1 : STD_LOGIC_VECTOR(8 DOWNTO 0) := operando_1(8) & operando_1;
+--  CONSTANT op2 : STD_LOGIC_VECTOR(8 DOWNTO 0) := operando_2(8) & operando_2;
+--  CONSTANT notop1 : STD_LOGIC_VECTOR(8 DOWNTO 0) := NOT op1 + 1;
+	
 	SIGNAL op_2_9_bits : STD_LOGIC_VECTOR(8 DOWNTO 0);
 	
 	SIGNAL saida_gera_operando1, saida_gera_operando2: STD_LOGIC_VECTOR(8 DOWNTO 0);
@@ -24,7 +29,7 @@ BEGIN
 	
 	op_2_9_bits <= operando_2 & '0';
 	
-   aux1 <= saida_gera_operando1(8) & saida_gera_operando1(8) & saida_gera_operando1(8 DOWNTO 2);
+  aux1 <= saida_gera_operando1(8) & saida_gera_operando1(8) & saida_gera_operando1(8 DOWNTO 2);
 	aux2 <= saida_soma_1(8) & saida_soma_1(8) & saida_soma_1(8 DOWNTO 2);
 	aux3 <= saida_soma_2(8) & saida_soma_2(8) & saida_soma_2(8 DOWNTO 2);
 	
@@ -75,5 +80,7 @@ BEGIN
 							saida => saida_soma_3
 						);
 	
-	saida <= saida_soma_3(8) & saida_soma_3 & saida_soma_2(1 DOWNTO 0) & saida_soma_1(1 DOWNTO 0) & saida_gera_operando1(1 DOWNTO 0);
+	
+	saida <= saida_soma_3(8) & saida_soma_3 & saida_soma_2(1 DOWNTO 0) & saida_soma_1(1 DOWNTO 0) & saida_gera_operando1(1 DOWNTO 0);
+	
 END behavior;

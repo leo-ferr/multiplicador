@@ -19,7 +19,7 @@ ARCHITECTURE behavior OF gerador_operando IS
 --	SIGNAL operand : STD_LOGIC_VECTOR(8 DOWNTO 0);
 	SIGNAL saida_mult: STD_LOGIC_VECTOR(8 DOWNTO 0);
 --	SIGNAL negativo : STD_LOGIC;
-
+  --SIGNAL op1. op2. notop1 : STD_LOGIC_VECTOR
 BEGIN
 
 --	DEBUG_MULT <= saida_mult;
@@ -46,7 +46,7 @@ BEGIN
 			
 			aux := saida_mult;
 		
-		ELSIF(MR = "101" OR MR = "110") THEN
+		ELSIF(MR = "101" OR MR = "100") THEN
 			aux := MD(7) & MD;
 			aux := (NOT aux) + 1;
 			
