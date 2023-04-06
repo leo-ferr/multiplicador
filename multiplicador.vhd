@@ -6,27 +6,27 @@ ENTITY multiplicador IS
 	PORT(
 		MD: IN STD_LOGIC_VECTOR(7 DOWNTO 0);
 		negativo : IN STD_LOGIC;
-		saida : OUT STD_LOGIC_VECTOR(8 DOWNTO 0)
+		saida : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
 	);
 END multiplicador;
 
 ARCHITECTURE behavior OF multiplicador IS
-	SIGNAL resultado : STD_LOGIC_VECTOR(8 DOWNTO 0);
+
 BEGIN
 	
-	PROCESS(MD)
-		VARIABLE aux : STD_LOGIC_VECTOR(7 DOWNTO 0);
+	PROCESS(MD, negativo)
+		VARIABLE aux : STD_LOGIC_VECTOR(9 DOWNTO 0);
 	BEGIN
-		IF(negativo = '0') THEN
-			aux := MD;
-			
-		ELSIF(negativo = '1') THEN
-			aux := (NOT MD) + 1;
-			
+
+		aux := MD(7) & MD(7) & MD;
+		
+		IF(negativo = '1') THEN
+			aux := (NOT aux) + 1;
+		  
 		END IF;
-		
-		saida <= aux & '0';
-		
+
+		saida <= aux(8 DOWNTO 0) & '0'; -- REALIZA O ShIFT (MD * 2)
+
 	END PROCESS;
-	
+
 END behavior;

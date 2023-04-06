@@ -9,22 +9,15 @@ ENTITY gerador_operando IS
 	PORT(
 		MD: IN  STD_LOGIC_VECTOR(7 DOWNTO 0);
 		MR: IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
-		saida	: OUT STD_LOGIC_VECTOR(8 DOWNTO 0)
-		--DEBUG_MULT : OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
-		--DEBUG_MD: OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+		saida	: OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
+
 	);
 END gerador_operando;
 
 ARCHITECTURE behavior OF gerador_operando IS
---	SIGNAL operand : STD_LOGIC_VECTOR(8 DOWNTO 0);
-	SIGNAL saida_mult: STD_LOGIC_VECTOR(8 DOWNTO 0);
---	SIGNAL negativo : STD_LOGIC;
+	SIGNAL saida_mult: STD_LOGIC_VECTOR(9 DOWNTO 0);
 
 BEGIN
-
---	DEBUG_MULT <= saida_mult;
---	DEBUG_MD <= MD;
-	
 	mult: multiplicador PORT MAP(
 		MD => MD,
 		negativo => MR(2),
@@ -32,25 +25,24 @@ BEGIN
 	);
 
 	PROCESS(MR, MD, saida_mult)
-		VARIABLE aux : STD_LOGIC_VECTOR(8 DOWNTO 0);
+		VARIABLE aux : STD_LOGIC_VECTOR(9 DOWNTO 0);
 	BEGIN
 		IF(MR = "000" OR MR = "111") THEN
 			aux := (OTHERS => '0');
 			
 		ELSIF(MR = "001" OR MR = "010") THEN
-			aux := MD(7) & MD;
+			aux := MD(7) & MD(7) & MD; -- EXTENDE O SINAL 
 		
 		ELSIF(MR = "011" OR MR = "100") THEN
-			-- USAR O BIT MAIS SIGNIFICATIVO PARA INDICAR O NEGATIVO
+			-- USAR O BIT MAIS SIGNIFICATIVO PARA INDICAR O NEGATIVO (-2 * operando)
 			-- operand <= multiplicador(negativo => MR(2))
 			
 			aux := saida_mult;
 		
 		ELSIF(MR = "101" OR MR = "110") THEN
-			aux := MD(7) & MD;
-			aux := (NOT aux) + 1;
-			
-			
+			aux := MD(7) & MD(7) & MD; -- EXTENDE O SINAL 
+			aux := (NOT aux) + 1;	-- COMPLEMENTO DE 2
+
 		END IF;
 		
 		saida <= aux;

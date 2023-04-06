@@ -11,22 +11,22 @@ ENTITY main IS
 END main;
 
 ARCHITECTURE behavior OF main IS
-	SIGNAL op_2_9_bits : STD_LOGIC_VECTOR(8 DOWNTO 0);
+	SIGNAL op_2_9_bits : STD_LOGIC_VECTOR(8 DOWNTO 0); -- operando com o bit damy
 	
-	SIGNAL saida_gera_operando1, saida_gera_operando2: STD_LOGIC_VECTOR(8 DOWNTO 0);
-	SIGNAL saida_gera_operando3, saida_gera_operando4: STD_LOGIC_VECTOR(8 DOWNTO 0);
+	SIGNAL saida_gera_operando1, saida_gera_operando2: STD_LOGIC_VECTOR(9 DOWNTO 0);
+	SIGNAL saida_gera_operando3, saida_gera_operando4: STD_LOGIC_VECTOR(9 DOWNTO 0);
 	
-	SIGNAL saida_soma_1, saida_soma_2, saida_soma_3: STD_LOGIC_VECTOR(8 DOWNTO 0);
+	SIGNAL saida_soma_1, saida_soma_2, saida_soma_3: STD_LOGIC_VECTOR(9 DOWNTO 0);
 	SIGNAL cout1 : STD_LOGIC;
 	
-	SIGNAL aux1, aux2, aux3 : STD_LOGIC_VECTOR(8 DOWNTO 0);
+	SIGNAL entrada_correta_somador1, entrada_correta_somador2, entrada_correta_somador3 : STD_LOGIC_VECTOR(9 DOWNTO 0); -- usadas para simular no modelsim
 BEGIN
 	
 	op_2_9_bits <= operando_2 & '0';
 	
-   aux1 <= saida_gera_operando1(8) & saida_gera_operando1(8) & saida_gera_operando1(8 DOWNTO 2);
-	aux2 <= saida_soma_1(8) & saida_soma_1(8) & saida_soma_1(8 DOWNTO 2);
-	aux3 <= saida_soma_2(8) & saida_soma_2(8) & saida_soma_2(8 DOWNTO 2);
+   entrada_correta_somador1 <= saida_gera_operando1(9) & saida_gera_operando1(9) & saida_gera_operando1(9 DOWNTO 2);
+	entrada_correta_somador2 <= saida_soma_1(9) & saida_soma_1(9) & saida_soma_1(9 DOWNTO 2);
+	entrada_correta_somador3 <= saida_soma_2(9) & saida_soma_2(9) & saida_soma_2(9 DOWNTO 2);
 	
 	gera_operando1: gerador_operando PORT MAP(
 						MD => operando_1,
@@ -39,7 +39,7 @@ BEGIN
 						saida => saida_gera_operando2
 						);
 	soma1: somador PORT MAP(
-							a => aux1,
+							a => entrada_correta_somador1,
 							b => saida_gera_operando2,
 							carry_in => '0',
 							Ov => open,
@@ -53,7 +53,7 @@ BEGIN
 						saida => saida_gera_operando3
 						);
 	soma2: somador PORT MAP(
-							a => aux2,
+							a => entrada_correta_somador2,
 							b => saida_gera_operando3,
 							carry_in => '0',
 							Ov => open,
@@ -67,7 +67,7 @@ BEGIN
 						saida => saida_gera_operando4
 						);
 	soma3: somador PORT MAP(
-							a => aux3,
+							a => entrada_correta_somador3,
 							b => saida_gera_operando4,
 							carry_in => '0',
 							Ov => open,
@@ -75,5 +75,8 @@ BEGIN
 							saida => saida_soma_3
 						);
 	
-	saida <= saida_soma_3(8) & saida_soma_3 & saida_soma_2(1 DOWNTO 0) & saida_soma_1(1 DOWNTO 0) & saida_gera_operando1(1 DOWNTO 0);
+	
+	
+	saida <= saida_soma_3 & saida_soma_2(1 DOWNTO 0) & saida_soma_1(1 DOWNTO 0) & saida_gera_operando1(1 DOWNTO 0);
+	
 END behavior;
